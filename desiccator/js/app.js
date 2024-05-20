@@ -96,6 +96,11 @@ new Vue({
                             beginAtZero: true,
                             max: 100
                         }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
                     }
                 }
             });
@@ -123,6 +128,11 @@ new Vue({
                             beginAtZero: true,
                             max: 100
                         }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
                     }
                 }
             });
