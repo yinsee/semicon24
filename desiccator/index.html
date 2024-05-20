@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Dashboard</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .status-circle {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .status-on {
+            background-color: green;
+        }
+
+        .status-off {
+            background-color: grey;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container-fluid mt-5">
+
+        <div class="row mb-5">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Status
+                    </div>
+                    <div class="card-body display-3 text-center" :class="status=='Open' ? 'alert-success':'alert-warning'">{{ status }}</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Units
+                    </div>
+                    <div class="card-body display-3 text-center">{{ unitsCount }}</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Temperature (&deg;C)
+                    </div>
+                    <div class="card-body display-3 text-center">{{ sensorStatus.temperature }}</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Humidity (%)
+                    </div>
+                    <div class="card-body display-3 text-center">{{ sensorStatus.humidity }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-6">
+                <h3>Temperature</h3>
+                <canvas id="temperatureChart"></canvas>
+            </div>
+            <div class="col-6">
+                <h3>Humidity</h3>
+                <canvas id="humidityChart"></canvas>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col">
+                <h3>Commands</h3>
+                <button @click="sendCommand('extend')" class="btn btn-primary">Extend</button>
+                <button @click="sendCommand('retract')" class="btn btn-secondary">Retract</button>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col">
+                <h3>Sensor Status</h3>
+                <p v-for="(status, index) in sensorStatus.limit_switches" :key="index">
+                    Limit Switch {{ index + 1 }}:
+                    <span :class="{'status-circle': true, 'status-on': status, 'status-off': !status}"></span>
+                </p>
+                <p>
+                    Cylinder Top:
+                    <span :class="{'status-circle': true, 'status-on': sensorStatus.cylinder_top, 'status-off': !sensorStatus.cylinder_top}"></span>
+                </p>
+                <p>
+                    Cylinder Bottom:
+                    <span :class="{'status-circle': true, 'status-on': sensorStatus.cylinder_bottom, 'status-off': !sensorStatus.cylinder_bottom}"></span>
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/mqtt.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/chartjs-adapter-moment.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

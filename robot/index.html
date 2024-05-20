@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Dashboard</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .status-circle {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .status-on {
+            background-color: green;
+        }
+
+        .status-off {
+            background-color: grey;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container mt-5">
+        <!-- <h1>Robot Dashboard</h1> -->
+        <div class="row mb-5">
+            <div class="col">
+                <h3>Robot Status</h3>
+                <p>
+                    Pick Oven:
+                    <span :class="{'status-circle': true, 'status-on': sensorStatus.pick_oven, 'status-off': !sensorStatus.pick_oven}"></span>
+                </p>
+                <p>
+                    Put Oven:
+                    <span :class="{'status-circle': true, 'status-on': sensorStatus.put_oven, 'status-off': !sensorStatus.put_oven}"></span>
+                </p>
+                <p>
+                    Pick Desiccator:
+                    <span :class="{'status-circle': true, 'status-on': sensorStatus.pick_desiccator, 'status-off': !sensorStatus.pick_desiccator}"></span>
+                </p>
+                <p>
+                    Put Desiccator:
+                    <span :class="{'status-circle': true, 'status-on': sensorStatus.put_desiccator, 'status-off': !sensorStatus.put_desiccator}"></span>
+                </p>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Pick Count
+                    </div>
+                    <div class="card-body display-1 text-center">{{ sensorStatus.pick_count }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col">
+                <h3>Units Per Hour</h3>
+                <canvas id="pickCountChart"></canvas>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col">
+                <h3>Commands</h3>
+                <button @click="sendCommand('pick_oven')" class="btn btn-primary">Pick Oven</button>
+                <button @click="sendCommand('put_oven')" class="btn btn-secondary">Put Oven</button>
+                <button @click="sendCommand('pick_desiccator')" class="btn btn-secondary">Pick Desiccator</button>
+                <butuon @click="sendCommand('put_desiccator')" class="btn btn-secondary">Put Desiccator</butuon>
+            </div>
+        </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/mqtt.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/chartjs-adapter-moment.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

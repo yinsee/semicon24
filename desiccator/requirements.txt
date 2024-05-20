@@ -1,0 +1,11 @@
+# This file is used to store the dependencies for the project
+# pip install -r requirements.txt
+paho-mqtt==1.6.1
+RPi.GPIO==0.7.0
+adafruit-circuitpython-dht==3.7.1
+
+
+# to upgrade packages, run the following:
+# pip install --upgrade <package>
+# pip freeze > requirements.txt
+
