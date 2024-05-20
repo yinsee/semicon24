@@ -30,7 +30,7 @@ new Vue({
             return this.sensorStatus.limit_switches.filter(status => status).length;
         },
         status() {
-            if (this.sensorStatus.cylinder_top && this.sensorStatus.cylinder_bottom) {
+            if (this.sensorStatus.cylinder_top) {
                 return 'Closed';
             } else {
                 return 'Open';

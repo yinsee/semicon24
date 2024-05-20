@@ -26,10 +26,10 @@ new Vue({
     },
     computed: {
         status() {
-            if (this.sensorStatus.pick_oven == true) return 'Picking from Oven';
-            if (this.sensorStatus.put_oven == true) return 'Putting in Oven';
-            if (this.sensorStatus.pick_desiccator == true) return 'Picking from Desiccator';
-            if (this.sensorStatus.put_desiccator == true) return 'Putting in Desiccator';
+            if (this.sensorStatus.pick_oven == true) return 'Oven Out';
+            if (this.sensorStatus.put_oven == true) return 'Oven In';
+            if (this.sensorStatus.pick_desiccator == true) return 'Desic Out';
+            if (this.sensorStatus.put_desiccator == true) return 'Desic In';
             return 'Idle';
         }
     },
