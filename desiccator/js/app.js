@@ -112,7 +112,7 @@ new Vue({
                     datasets: [{
                         label: 'Humidity (%)',
                         data: [],
-                        borderColor: 'blue',
+                        borderColor: 'cyan',
                         fill: false
                     }]
                 },

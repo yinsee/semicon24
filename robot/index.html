@@ -22,59 +22,75 @@
         .status-off {
             background-color: grey;
         }
+
+        body.bg-dark {
+            background-color: #242a30 !important;
+        }
     </style>
 </head>
 
-<body>
-    <div id="app" class="container mt-5">
-        <!-- <h1>Robot Dashboard</h1> -->
-        <div class="row mb-5">
+<body class="bg-dark text-light">
+    <div id="app" class="container-fluid mt-3">
+        <div class="text mb-3">
+            <img src="logo.svg" height="20" alt="">
+        </div>
+
+        <div class="row mb-3">
             <div class="col">
-                <h3>Robot Status</h3>
-                <p>
-                    Pick Oven:
-                    <span :class="{'status-circle': true, 'status-on': sensorStatus.pick_oven, 'status-off': !sensorStatus.pick_oven}"></span>
-                </p>
-                <p>
-                    Put Oven:
-                    <span :class="{'status-circle': true, 'status-on': sensorStatus.put_oven, 'status-off': !sensorStatus.put_oven}"></span>
-                </p>
-                <p>
-                    Pick Desiccator:
-                    <span :class="{'status-circle': true, 'status-on': sensorStatus.pick_desiccator, 'status-off': !sensorStatus.pick_desiccator}"></span>
-                </p>
-                <p>
-                    Put Desiccator:
-                    <span :class="{'status-circle': true, 'status-on': sensorStatus.put_desiccator, 'status-off': !sensorStatus.put_desiccator}"></span>
-                </p>
+                <div class="card bg-dark">
+                    <div class="card-header small">
+                        Status
+                    </div>
+                    <div class="card-body display-3 text-center">{{ status }}</div>
+                </div>
             </div>
             <div class="col">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card bg-dark">
+                    <div class="card-header small">
                         Pick Count
                     </div>
-                    <div class="card-body display-1 text-center">{{ sensorStatus.pick_count }}</div>
+                    <div class="card-body display-3 text-center">{{ sensorStatus.pick_count }}</div>
                 </div>
             </div>
         </div>
 
-        <div class="row mb-5">
+        <div class="row mb-3">
             <div class="col">
                 <h3>Units Per Hour</h3>
-                <canvas id="pickCountChart"></canvas>
+                <div class="card bg-dark">
+                    <canvas id="pickCountChart"></canvas>
+                </div>
             </div>
         </div>
 
-        <div class="row mb-5">
-            <div class="col">
-                <h3>Commands</h3>
-                <button @click="sendCommand('pick_oven')" class="btn btn-primary">Pick Oven</button>
-                <button @click="sendCommand('put_oven')" class="btn btn-secondary">Put Oven</button>
-                <button @click="sendCommand('pick_desiccator')" class="btn btn-secondary">Pick Desiccator</button>
-                <butuon @click="sendCommand('put_desiccator')" class="btn btn-secondary">Put Desiccator</butuon>
-            </div>
+        <div class="text-center mb-3">
+            <!-- <h3>Commands</h3> -->
+            <button @click="sendCommand('pick_oven')" class="btn btn-lg btn-primary">Pick Oven</button>
+            <button @click="sendCommand('put_oven')" class="btn btn-lg btn-primary">Put Oven</button>
+            <button @click="sendCommand('pick_desiccator')" class="btn btn-lg btn-primary">Pick Desiccator</button>
+            <butuon @click="sendCommand('put_desiccator')" class="btn btn-lg btn-primary">Put Desiccator</butuon>
+        </div>
+
+        <div class="text-center fixed-bottom navbar navbar-dark bg-dark">
+            <span>
+                Pick Oven:
+                <span :class="{'status-circle': true, 'status-on': sensorStatus.pick_oven, 'status-off': !sensorStatus.pick_oven}"></span>
+            </span>
+            <span>
+                Put Oven:
+                <span :class="{'status-circle': true, 'status-on': sensorStatus.put_oven, 'status-off': !sensorStatus.put_oven}"></span>
+            </span>
+            <span>
+                Pick Desiccator:
+                <span :class="{'status-circle': true, 'status-on': sensorStatus.pick_desiccator, 'status-off': !sensorStatus.pick_desiccator}"></span>
+            </span>
+            <span>
+                Put Desiccator:
+                <span :class="{'status-circle': true, 'status-on': sensorStatus.put_desiccator, 'status-off': !sensorStatus.put_desiccator}"></span>
+            </span>
         </div>
     </div>
+
     <script src="js/vue.min.js"></script>
     <script src="js/mqtt.min.js"></script>
     <script src="js/chart.min.js"></script>

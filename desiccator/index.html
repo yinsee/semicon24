@@ -22,40 +22,46 @@
         .status-off {
             background-color: grey;
         }
+
+        body.bg-dark {
+            background-color: #242a30 !important;
+        }
     </style>
 </head>
 
-<body>
-    <div id="app" class="container-fluid mt-5">
-
-        <div class="row mb-5">
+<body class="bg-dark text-light">
+    <div id="app" class="container-fluid mt-3">
+        <div class="text mb-3">
+            <img src="logo.svg" height="20" alt="">
+        </div>
+        <div class="row mb-3">
             <div class="col">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card bg-dark">
+                    <div class="card-header small">
                         Status
                     </div>
-                    <div class="card-body display-3 text-center" :class="status=='Open' ? 'alert-success':'alert-warning'">{{ status }}</div>
+                    <div class="card-body display-3 text-center" :class="status=='Open' ? 'text-success':'text-warning'">{{ status }}</div>
                 </div>
             </div>
             <div class="col">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card bg-dark">
+                    <div class="card-header small">
                         Units
                     </div>
                     <div class="card-body display-3 text-center">{{ unitsCount }}</div>
                 </div>
             </div>
             <div class="col">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card bg-dark">
+                    <div class="card-header small">
                         Temperature (&deg;C)
                     </div>
                     <div class="card-body display-3 text-center">{{ sensorStatus.temperature }}</div>
                 </div>
             </div>
             <div class="col">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card bg-dark">
+                    <div class="card-header small">
                         Humidity (%)
                     </div>
                     <div class="card-body display-3 text-center">{{ sensorStatus.humidity }}</div>
@@ -63,41 +69,40 @@
             </div>
         </div>
 
-        <div class="row mb-5">
+        <div class="row mb-3">
             <div class="col-6">
                 <h3>Temperature</h3>
-                <canvas id="temperatureChart"></canvas>
+                <div class="card bg-dark">
+                    <canvas id="temperatureChart"></canvas>
+                </div>
             </div>
             <div class="col-6">
                 <h3>Humidity</h3>
-                <canvas id="humidityChart"></canvas>
+                <div class="card bg-dark">
+                    <canvas id="humidityChart"></canvas>
+                </div>
             </div>
         </div>
 
-        <div class="row mb-5">
-            <div class="col">
-                <h3>Commands</h3>
-                <button @click="sendCommand('extend')" class="btn btn-primary">Extend</button>
-                <button @click="sendCommand('retract')" class="btn btn-secondary">Retract</button>
-            </div>
+        <div class="text-center mb-3">
+            <button @click="sendCommand('extend')" class="btn btn-lg btn-primary">Extend</button>
+            <button @click="sendCommand('retract')" class="btn btn-lg btn-primary">Retract</button>
         </div>
 
-        <div class="row mb-5">
-            <div class="col">
-                <h3>Sensor Status</h3>
-                <p v-for="(status, index) in sensorStatus.limit_switches" :key="index">
-                    Limit Switch {{ index + 1 }}:
-                    <span :class="{'status-circle': true, 'status-on': status, 'status-off': !status}"></span>
-                </p>
-                <p>
-                    Cylinder Top:
-                    <span :class="{'status-circle': true, 'status-on': sensorStatus.cylinder_top, 'status-off': !sensorStatus.cylinder_top}"></span>
-                </p>
-                <p>
-                    Cylinder Bottom:
-                    <span :class="{'status-circle': true, 'status-on': sensorStatus.cylinder_bottom, 'status-off': !sensorStatus.cylinder_bottom}"></span>
-                </p>
-            </div>
+        <div class="text-center fixed-bottom navbar navbar-dark bg-dark">
+            <!-- <h3>Sensor Status</h3> -->
+            <span v-for="(status, index) in sensorStatus.limit_switches" :key="index">
+                Limit Switch {{ index + 1 }}:
+                <span :class="{'status-circle': true, 'status-on': status, 'status-off': !status}"></span>
+            </span>
+            <span>
+                Cylinder Top:
+                <span :class="{'status-circle': true, 'status-on': sensorStatus.cylinder_top, 'status-off': !sensorStatus.cylinder_top}"></span>
+            </span>
+            <span>
+                Cylinder Bottom:
+                <span :class="{'status-circle': true, 'status-on': sensorStatus.cylinder_bottom, 'status-off': !sensorStatus.cylinder_bottom}"></span>
+            </span>
         </div>
 
     </div>

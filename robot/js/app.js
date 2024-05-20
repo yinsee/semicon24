@@ -24,6 +24,15 @@ new Vue({
         this.initMQTT();
         this.initChart();
     },
+    computed: {
+        status() {
+            if (this.sensorStatus.pick_oven == true) return 'Picking from Oven';
+            if (this.sensorStatus.put_oven == true) return 'Putting in Oven';
+            if (this.sensorStatus.pick_desiccator == true) return 'Picking from Desiccator';
+            if (this.sensorStatus.put_desiccator == true) return 'Putting in Desiccator';
+            return 'Idle';
+        }
+    },
     methods: {
         initMQTT() {
             const client = mqtt.connect(this.brokerAddress);
@@ -73,6 +82,7 @@ new Vue({
                 },
                 options: {
                     responsive: true,
+                    aspectRatio: 3,
                     scales: {
                         x: {
                             type: 'time',
@@ -92,7 +102,7 @@ new Vue({
                             title: {
                                 display: true,
                                 text: 'Pick Count'
-                            }
+                            },
                         }
                     },
                     plugins: {
