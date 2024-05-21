@@ -38,6 +38,18 @@
             <div class="col">
                 <div class="card bg-dark">
                     <div class="card-header small">
+                        Control
+                    </div>
+                    <div class="card-body text-center display-3">
+                        <button @click="sendCommand('start')" class="btn btn-lg btn-success" :disabled="!sensorStatus.cylinder_top">Open</button>
+                        <button @click="sendCommand('stop')" class="btn btn-lg btn-danger" :disabled="!sensorStatus.cylinder_bottom">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card bg-dark">
+                    <div class="card-header small">
                         Status
                     </div>
                     <div class="card-body display-3 text-center" :class="status=='Open' ? 'text-warning':'text-success'">{{ status }}</div>
@@ -82,11 +94,6 @@
                     <canvas id="humidityChart"></canvas>
                 </div>
             </div>
-        </div>
-
-        <div class="text-center mb-3">
-            <button @click="sendCommand('extend')" class="btn btn-lg btn-primary">Extend</button>
-            <button @click="sendCommand('retract')" class="btn btn-lg btn-primary">Retract</button>
         </div>
 
         <div class="text-center fixed-bottom navbar navbar-dark bg-dark">

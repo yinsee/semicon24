@@ -8,7 +8,7 @@ new Vue({
             put_desiccator: false,
             pick_count: 0,
         },
-        brokerAddress: 'ws://localhost:9001',
+        brokerAddress: 'ws://192.168.0.42:9001',
         deviceName: 'robot',
         commandTopic: '',
         dataTopic: '',
@@ -82,7 +82,7 @@ new Vue({
                 },
                 options: {
                     responsive: true,
-                    aspectRatio: 3,
+                    aspectRatio: 1.5,
                     scales: {
                         x: {
                             type: 'time',

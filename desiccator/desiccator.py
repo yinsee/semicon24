@@ -41,10 +41,10 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     payload = msg.payload.decode('utf-8')
     print(f"Received message: {payload} on topic {msg.topic}")
-    if payload == 'extend':
+    if payload == 'close':
         GPIO.output(CYLINDER_EXTEND_PIN, GPIO.HIGH)
         GPIO.output(CYLINDER_RETRACT_PIN, GPIO.LOW)
-    elif payload == 'retract':
+    elif payload == 'open':
         GPIO.output(CYLINDER_EXTEND_PIN, GPIO.LOW)
         GPIO.output(CYLINDER_RETRACT_PIN, GPIO.HIGH)
     else:

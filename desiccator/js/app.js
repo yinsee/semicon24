@@ -3,8 +3,8 @@ new Vue({
     data: {
         sensorStatus: {
             limit_switches: [false, false, false, false],
-            cylinder_top: false,
-            cylinder_bottom: false,
+            door_close: false,
+            door_open: false,
             temperature: 0,
             humidity: 0
         },
@@ -12,7 +12,7 @@ new Vue({
         humidityData: [],
         temperatureChart: null,
         humidityChart: null,
-        brokerAddress: 'ws://localhost:9001',
+        brokerAddress: 'ws://192.168.0.42:9001',
         deviceName: 'desiccator',
         commandTopic: '',
         dataTopic: '',
@@ -30,7 +30,7 @@ new Vue({
             return this.sensorStatus.limit_switches.filter(status => status).length;
         },
         status() {
-            if (this.sensorStatus.cylinder_top) {
+            if (this.sensorStatus.cylinder_top == true) {
                 return 'Closed';
             } else {
                 return 'Open';
@@ -63,11 +63,7 @@ new Vue({
             this.client.publish(this.commandTopic, command);
         },
         updateStatus(data) {
-            this.sensorStatus.limit_switches = data.limit_switches;
-            this.sensorStatus.cylinder_top = data.cylinder_top;
-            this.sensorStatus.cylinder_bottom = data.cylinder_bottom;
-            this.sensorStatus.temperature = data.temperature;
-            this.sensorStatus.humidity = data.humidity;
+            this.sensorStatus = data;
         },
         initCharts() {
             const temperatureCtx = document.getElementById('temperatureChart').getContext('2d');
