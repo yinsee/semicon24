@@ -7,6 +7,7 @@ new Vue({
             pick_desiccator: false,
             put_desiccator: false,
             pick_count: 0,
+            stop: true,
         },
         brokerAddress: 'ws://192.168.0.42:9001',
         deviceName: 'robot',
@@ -26,10 +27,11 @@ new Vue({
     },
     computed: {
         status() {
-            if (this.sensorStatus.pick_oven == true) return 'Oven Out';
-            if (this.sensorStatus.put_oven == true) return 'Oven In';
-            if (this.sensorStatus.pick_desiccator == true) return 'Desic Out';
-            if (this.sensorStatus.put_desiccator == true) return 'Desic In';
+            if (this.sensorStatus.stop == true) return 'Stopped';
+            else if (this.sensorStatus.pick_oven == true) return 'Oven Out';
+            else if (this.sensorStatus.put_oven == true) return 'Oven In';
+            else if (this.sensorStatus.pick_desiccator == true) return 'Desic Out';
+            else if (this.sensorStatus.put_desiccator == true) return 'Desic In';
             return 'Idle';
         }
     },
@@ -59,11 +61,7 @@ new Vue({
             this.client.publish(this.commandTopic, command);
         },
         updateStatus(data) {
-            this.sensorStatus.pick_oven = data.pick_oven;
-            this.sensorStatus.put_oven = data.put_oven;
-            this.sensorStatus.pick_desiccator = data.pick_desiccator;
-            this.sensorStatus.put_desiccator = data.put_desiccator;
-            this.sensorStatus.pick_count = data.pick_count;
+            this.sensorStatus = data;
         },
         initChart() {
             const ctx = document.getElementById('pickCountChart').getContext('2d');

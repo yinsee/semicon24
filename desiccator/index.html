@@ -42,8 +42,9 @@
                         Control
                     </div>
                     <div class="card-body text-center display-3">
-                        <button @click="sendCommand('start')" class="btn btn-lg btn-success" :disabled="!sensorStatus.cylinder_top">Open</button>
-                        <button @click="sendCommand('stop')" class="btn btn-lg btn-danger" :disabled="!sensorStatus.cylinder_bottom">Close</button>
+                        <button @click="sendCommand('open')" class="btn btn-lg btn-success" v-if="sensorStatus.cylinder_top && !sensorStatus.cylinder_bottom">Open</button>
+                        <button @click="sendCommand('close')" class="btn btn-lg btn-danger" v-else-if="sensorStatus.cylinder_bottom && !sensorStatus.cylinder_top">Close</button>
+                        <span v-else class="text-muted">N/A</span>
                     </div>
                 </div>
             </div>

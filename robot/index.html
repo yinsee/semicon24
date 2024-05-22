@@ -43,8 +43,15 @@
                         Control
                     </div>
                     <div class="card-body text-center">
-                        <button @click="sendCommand('start')" class="btn btn-lg btn-success">START</button>
-                        <button @click="sendCommand('stop')" class="btn btn-lg btn-danger">STOP</button>
+                        <button @click="sendCommand('start')" class="btn btn-lg btn-success" :disabled="!sensorStatus.stop">START</button>
+                        <button @click="sendCommand('stop')" class="btn btn-lg btn-danger" :disabled="!!sensorStatus.stop">STOP</button>
+                        <div class="mt-3">
+                            <button @click="sendCommand('pick_oven')" class="btn btn-light" :disabled="status != 'Idle'">Pick Oven</button>
+                            <button @click=" sendCommand('put_oven')" class="btn btn-light" :disabled="status != 'Idle'">Put Oven</button>
+                            <button @click=" sendCommand('pick_desiccator')" class="btn btn-light" :disabled="status != 'Idle'">Pick Desc</button>
+                            <button @click=" sendCommand('put_desiccator')" class="btn btn-light" :disabled="status != 'Idle'">Put Desc</button>
+                        </div>
+
                     </div>
                 </div>
                 <br>
@@ -64,7 +71,7 @@
                 </div>
 
             </div>
-            <div class="col">
+            <div class="col-8">
                 <div class="card bg-dark">
                     <div class="card-header small">
                         Units Per Hour

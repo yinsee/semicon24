@@ -5,18 +5,18 @@ import time
 from datetime import datetime, timedelta
 
 # Define GPIO pins for inputs and outputs
-inputs = {
-    "pick_oven": 17,
-    "put_oven": 18,
-    "pick_desiccator": 22,
-    "put_desiccator": 23
+inputs = { #check state movement of the robot/ robot motion sequence
+    "pick_oven": 2,# ROBOT PIN1
+    "put_oven": 3,# ROBOT PIN2
+    "pick_desiccator": 4,# ROBOT PIN3
+    "put_desiccator": 17# ROBOT PIN4
 }
 
 outputs = {
-    "pick_oven": 2,
-    "put_oven": 3,
-    "pick_desiccator": 4,
-    "put_desiccator": 5
+    "pick_oven": 14,# ROBOT PIN4
+    "put_oven": 15,# ROBOT PIN5
+    "pick_desiccator": 18,# ROBOT PIN6
+    "put_desiccator": 23,# ROBOT PIN7
 }  # Assuming 4 output pins
 
 # MQTT Settings
@@ -24,20 +24,24 @@ BROKER = 'localhost'
 PORT = 1883
 DEVICE_NAME = "robot"
 
-# pick status
-sensor_status = None
-previous_status = None
-pick_count = 0
-last_pick_oven_state = GPIO.input(inputs["pick_oven"])
-next_reset_time = datetime.now() + timedelta(hours=1)
-
 # Initialize GPIO
+START_STOP_SYS = 25# ROBOT PIN8
 GPIO.setmode(GPIO.BCM)
 for pin in inputs.values():
     GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 for pin in outputs.values():
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
+
+GPIO.setup(START_STOP_SYS, GPIO.OUT)
+GPIO.output(START_STOP_SYS, GPIO.HIGH)
+
+# pick status
+sensor_status = None
+previous_status = None
+pick_count = 0
+last_pick_oven_state = GPIO.input(inputs["pick_oven"])
+next_reset_time = datetime.now() + timedelta(hours=1)
 
 # MQTT callback functions
 def on_connect(client, userdata, flags, rc):
@@ -47,18 +51,28 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     payload = msg.payload.decode('utf-8')
     print(f"Received message: {payload} on topic {msg.topic}")
-    for pin_name, pin_number in outputs.items():
-        GPIO.output(pin_number, GPIO.LOW if pin_name != payload else GPIO.HIGH)
+    if payload == "start":
+        GPIO.output(START_STOP_SYS, GPIO.LOW)
+    elif payload == "stop":
+        GPIO.output(START_STOP_SYS, GPIO.HIGH)
+    else:
+        for pin_name, pin_number in outputs.items():
+            GPIO.output(pin_number, GPIO.LOW if pin_name != payload else GPIO.HIGH)
+        time.sleep(1)
+        for pin_name, pin_number in outputs.items():
+            GPIO.output(pin_number, GPIO.LOW)
 
 # Function to publish sensor status
 def publish_sensor_status(client):
+    global sensor_status
     sensor_status = {}
     for pin_name, pin_number in inputs.items():
         sensor_status[pin_name] = GPIO.input(pin_number)
     sensor_status['pick_count'] = pick_count
+    sensor_status['stop'] = GPIO.input(START_STOP_SYS)
 
     if sensor_status != previous_status:
-        client.publish(f"/{DEVICE_NAME}/data", json.dumps(sensor_status))
+        client.publish(f"/{DEVICE_NAME}/data", json.dumps(sensor_status), retain=True)
         print(f"Published sensor status: {sensor_status}")
 
 # MQTT client setup
@@ -88,7 +102,7 @@ try:
         publish_sensor_status(client)
         previous_status = sensor_status
 
-        time.sleep(0.1)  # Adjust sleep time as needed
+        time.sleep(0.5)  # Adjust sleep time as needed
 
 except KeyboardInterrupt:
     print("Exiting program")
