@@ -30,8 +30,8 @@
     </style>
 </head>
 
-<body class="bg-dark text-light">
-    <div id="app" class="container-fluid mt-3">
+<body class="text-light">
+    <div id="app" class="container-fluid pt-3" :class="sensorStatus.safety_curtain ? 'bg-dark' : 'bg-danger'" style="height:100vh">
         <div class="text mb-3">
             <img src="logo.svg" height="20" alt="">
         </div>
@@ -70,7 +70,7 @@
                     <div class="card-header small">
                         Temperature (&deg;C)
                     </div>
-                    <div class="card-body display-3 text-center">{{ sensorStatus.temperature }}</div>
+                    <div class="card-body display-3 text-center">{{ sensorStatus.temperature ?? '-' }}</div>
                 </div>
             </div>
             <div class="col">
@@ -78,7 +78,7 @@
                     <div class="card-header small">
                         Humidity (%)
                     </div>
-                    <div class="card-body display-3 text-center">{{ sensorStatus.humidity }}</div>
+                    <div class="card-body display-3 text-center">{{ sensorStatus.humidity ?? '-' }}</div>
                 </div>
             </div>
         </div>
@@ -111,6 +111,10 @@
             <span>
                 Cylinder Bottom:
                 <span :class="{'status-circle': true, 'status-on': sensorStatus.cylinder_bottom, 'status-off': !sensorStatus.cylinder_bottom}"></span>
+            </span>
+            <span>
+                Safety Curtain:
+                <span :class="{'status-circle': true, 'status-on': sensorStatus.safety_curtain, 'status-off': !sensorStatus.safety_curtain}"></span>
             </span>
         </div>
 

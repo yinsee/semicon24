@@ -5,6 +5,7 @@ new Vue({
             limit_switches: [false, false, false, false],
             door_close: false,
             door_open: false,
+            safety_curtain: true,
             temperature: 0,
             humidity: 0
         },
