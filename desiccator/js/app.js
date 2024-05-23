@@ -7,7 +7,9 @@ new Vue({
             door_open: false,
             safety_curtain: true,
             temperature: 0,
-            humidity: 0
+            humidity: 0,
+            alarm: 0,
+            gas: 0
         },
         temperatureData: [],
         humidityData: [],

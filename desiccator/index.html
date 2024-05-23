@@ -24,14 +24,34 @@
             background-color: grey;
         }
 
-        body.bg-dark {
+        .card.bg-dark {
             background-color: #242a30 !important;
+        }
+
+        @keyframes pulseAlarm {
+            0% {
+                background-color: var(--red);
+            }
+
+            50% {
+                background-color: var(--dark);
+            }
+
+            100% {
+                background-color: var(--red);
+            }
+        }
+
+        .bg-alarm {
+            /* background color with red pounding animation */
+            background-color: var(--danger);
+            animation: pulseAlarm 2s infinite;
         }
     </style>
 </head>
 
-<body class="text-light">
-    <div id="app" class="container-fluid pt-3" :class="sensorStatus.safety_curtain ? 'bg-dark' : 'bg-danger'" style="height:100vh">
+<body class="bg-dark text-light">
+    <div id="app" class="container-fluid pt-3" :class="{'bg-alarm' : sensorStatus.alarm }" style="height:100vh">
         <div class="text mb-3">
             <img src="logo.svg" height="20" alt="">
         </div>
@@ -41,10 +61,11 @@
                     <div class="card-header small">
                         Control
                     </div>
-                    <div class="card-body text-center display-3">
-                        <button @click="sendCommand('open')" class="btn btn-lg btn-success" v-if="sensorStatus.cylinder_top && !sensorStatus.cylinder_bottom">Open</button>
-                        <button @click="sendCommand('close')" class="btn btn-lg btn-danger" v-else-if="sensorStatus.cylinder_bottom && !sensorStatus.cylinder_top">Close</button>
-                        <span v-else class="text-muted">N/A</span>
+                    <div class="card-body text-center">
+                        <button @click="sendCommand('alarm_off')" class="btn btn-lg btn-danger" v-if="sensorStatus.alarm">Clear<br>Alarm</button>
+                        <button @click="sendCommand('open')" class="btn btn-lg btn-success" v-else-if="sensorStatus.cylinder_top && !sensorStatus.cylinder_bottom">Open<br>Door</button>
+                        <button @click="sendCommand('close')" class="btn btn-lg btn-danger" v-else-if="sensorStatus.cylinder_bottom && !sensorStatus.cylinder_top">Close<br>Door</button>
+                        <span v-else class="text-muted display-3">N/A</span>
                     </div>
                 </div>
             </div>
@@ -100,9 +121,13 @@
 
         <div class="text-center fixed-bottom navbar navbar-dark bg-dark">
             <!-- <h3>Sensor Status</h3> -->
-            <span v-for="(status, index) in sensorStatus.limit_switches" :key="index">
-                Limit Switch {{ index + 1 }}:
-                <span :class="{'status-circle': true, 'status-on': status, 'status-off': !status}"></span>
+            <span>
+                Limit Switch:
+                <span v-for="(status, index) in sensorStatus.limit_switches" :key="index" :class="{'status-circle': true, 'status-on': status, 'status-off': !status}"></span>
+            </span>
+            <span>
+                Gas:
+                <span :class="{'status-circle': true, 'status-on': sensorStatus.gas, 'status-off': !sensorStatus.gas}"></span>
             </span>
             <span>
                 Cylinder Top:
