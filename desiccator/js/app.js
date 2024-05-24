@@ -1,3 +1,7 @@
+TEMPERATURE_THRESHOLD = 40;
+HUMIDITY_THRESHOLD = 50;
+HUMIDITY_ALARM_THRESHOLD = 70;
+
 new Vue({
     el: '#app',
     data: {
@@ -19,6 +23,9 @@ new Vue({
         deviceName: 'desiccator',
         commandTopic: '',
         dataTopic: '',
+        TEMPERATURE_THRESHOLD,
+        HUMIDITY_THRESHOLD,
+        HUMIDITY_ALARM_THRESHOLD,
     },
     created() {
         this.commandTopic = `/${this.deviceName}/command`;
@@ -72,6 +79,24 @@ new Vue({
             const temperatureCtx = document.getElementById('temperatureChart').getContext('2d');
             const humidityCtx = document.getElementById('humidityChart').getContext('2d');
 
+            const drawThresholdLines = (chart, values, colors) => {
+                const ctx = chart.ctx;
+                const yScale = chart.scales['y'];
+                const xScale = chart.scales['x'];
+
+                values.forEach((value, index) => {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.strokeStyle = colors[index];
+                    ctx.lineWidth = 0.5;
+                    ctx.moveTo(xScale.left, yScale.getPixelForValue(value));
+                    ctx.lineTo(xScale.right, yScale.getPixelForValue(value));
+                    ctx.stroke();
+                    ctx.restore();
+                });
+
+            };
+
             this.temperatureChart = new Chart(temperatureCtx, {
                 type: 'line',
                 data: {
@@ -79,7 +104,7 @@ new Vue({
                     datasets: [{
                         label: 'Temperature (°C)',
                         data: [],
-                        borderColor: 'red',
+                        borderColor: 'lime',
                         fill: false
                     }]
                 },
@@ -93,15 +118,25 @@ new Vue({
                         },
                         y: {
                             beginAtZero: true,
-                            max: 100
+                            max: 50
                         }
                     },
                     plugins: {
                         legend: {
                             display: false
                         },
+                        annotation: {
+                            drawTime: 'afterDatasetsDraw',
+                            annotations: {
+                                drawThresholdLines
+                            }
+                        }
                     }
-                }
+                },
+                plugins: [{
+                    id: 'thresholdLines',
+                    beforeDraw: (chart) => drawThresholdLines(chart, [TEMPERATURE_THRESHOLD], ['red'])
+                }]
             });
 
             this.humidityChart = new Chart(humidityCtx, {
@@ -132,8 +167,19 @@ new Vue({
                         legend: {
                             display: false
                         },
+                        annotation: {
+                            drawTime: 'afterDatasetsDraw',
+                            annotations: {
+                                drawThresholdLines
+                            }
+                        }
                     }
-                }
+                },
+                plugins: [{
+                    id: 'thresholdLines',
+                    beforeDraw: (chart) => drawThresholdLines(chart, [HUMIDITY_THRESHOLD, HUMIDITY_ALARM_THRESHOLD], ['yellow', 'red'])
+                }]
+
             });
         },
         updateCharts(data) {

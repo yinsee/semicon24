@@ -91,7 +91,7 @@
                     <div class="card-header small">
                         Temperature (&deg;C)
                     </div>
-                    <div class="card-body display-3 text-center">{{ sensorStatus.temperature ?? '-' }}</div>
+                    <div class="card-body display-3 text-center" :class="{'text-warning':sensorStatus.temperature>=TEMPERATURE_THRESHOLD}">{{ sensorStatus.temperature ?? '-' }}</div>
                 </div>
             </div>
             <div class="col">
@@ -99,7 +99,7 @@
                     <div class="card-header small">
                         Humidity (%)
                     </div>
-                    <div class="card-body display-3 text-center">{{ sensorStatus.humidity ?? '-' }}</div>
+                    <div class="card-body display-3 text-center" :class="{'text-warning':sensorStatus.humidity>=HUMIDITY_THRESHOLD && sensorStatus.humidity<HUMIDITY_ALARM_THRESHOLD,'text-danger':sensorStatus.humidity>=HUMIDITY_ALARM_THRESHOLD}">{{ sensorStatus.humidity ?? '-' }}</div>
                 </div>
             </div>
         </div>
