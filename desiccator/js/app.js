@@ -109,6 +109,7 @@ new Vue({
                     }]
                 },
                 options: {
+                    aspectRatio: 1.75,
                     scales: {
                         x: {
                             type: 'time',
@@ -151,6 +152,7 @@ new Vue({
                     }]
                 },
                 options: {
+                    aspectRatio: 1.75,
                     scales: {
                         x: {
                             type: 'time',

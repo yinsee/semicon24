@@ -56,50 +56,50 @@
             <img src="logo.svg" height="20" alt="">
         </div>
         <div class="row mb-3">
-            <div class="col">
+            <div class="col-3">
                 <div class="card bg-dark">
                     <div class="card-header small">
                         Control
                     </div>
                     <div class="card-body text-center">
-                        <button @click="sendCommand('alarm_off')" class="btn btn-lg btn-danger" v-if="sensorStatus.alarm">Clear<br>Alarm</button>
-                        <button @click="sendCommand('open')" class="btn btn-lg btn-success" v-else-if="sensorStatus.cylinder_top && !sensorStatus.cylinder_bottom">Open<br>Door</button>
-                        <button @click="sendCommand('close')" class="btn btn-lg btn-danger" v-else-if="sensorStatus.cylinder_bottom && !sensorStatus.cylinder_top">Close<br>Door</button>
-                        <span v-else class="text-muted display-3">N/A</span>
+                        <button @click="sendCommand('alarm_off')" class="btn btn-lg btn-danger" v-if="sensorStatus.alarm">Clear Alarm</button>
+                        <button @click="sendCommand('open')" class="btn btn-lg btn-success" v-else-if="sensorStatus.cylinder_top && !sensorStatus.cylinder_bottom">Open Door</button>
+                        <button @click="sendCommand('close')" class="btn btn-lg btn-danger" v-else-if="sensorStatus.cylinder_bottom && !sensorStatus.cylinder_top">Close Door</button>
+                        <span v-else class="text-muted h1">N/A</span>
                     </div>
                 </div>
             </div>
 
-            <div class="col">
+            <div class="col-3">
                 <div class="card bg-dark">
                     <div class="card-header small">
                         Status
                     </div>
-                    <div class="card-body display-3 text-center" :class="status=='Open' ? 'text-warning':'text-success'">{{ status }}</div>
+                    <div class="card-body h1 text-center" :class="status=='Open' ? 'text-warning':'text-success'">{{ status }}</div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-2">
                 <div class="card bg-dark">
                     <div class="card-header small">
                         Units
                     </div>
-                    <div class="card-body display-3 text-center">{{ unitsCount }}</div>
+                    <div class="card-body h1 text-center">{{ unitsCount }}</div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-2">
                 <div class="card bg-dark">
                     <div class="card-header small">
                         Temperature (&deg;C)
                     </div>
-                    <div class="card-body display-3 text-center" :class="{'text-warning':sensorStatus.temperature>=TEMPERATURE_THRESHOLD}">{{ sensorStatus.temperature ?? '-' }}</div>
+                    <div class="card-body h1 text-center" :class="{'text-warning':sensorStatus.temperature>=TEMPERATURE_THRESHOLD}">{{ sensorStatus.temperature ?? '-' }}</div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-2">
                 <div class="card bg-dark">
                     <div class="card-header small">
                         Humidity (%)
                     </div>
-                    <div class="card-body display-3 text-center" :class="{'text-warning':sensorStatus.humidity>=HUMIDITY_THRESHOLD && sensorStatus.humidity<HUMIDITY_ALARM_THRESHOLD,'text-danger':sensorStatus.humidity>=HUMIDITY_ALARM_THRESHOLD}">{{ sensorStatus.humidity ?? '-' }}</div>
+                    <div class="card-body h1 text-center" :class="{'text-warning':sensorStatus.humidity>=HUMIDITY_THRESHOLD && sensorStatus.humidity<HUMIDITY_ALARM_THRESHOLD,'text-danger':sensorStatus.humidity>=HUMIDITY_ALARM_THRESHOLD}">{{ sensorStatus.humidity ?? '-' }}</div>
                 </div>
             </div>
         </div>

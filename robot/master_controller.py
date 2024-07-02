@@ -21,7 +21,8 @@ robotSensor = {
 
 ovenSensor = {
     "door_open":False,
-    "door_close":False
+    "door_close":False,
+    "stop":True
     }
 
 E_STOP_PIN_IN = 24

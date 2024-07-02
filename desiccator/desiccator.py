@@ -72,12 +72,16 @@ def on_message(client, userdata, msg):
 def read_arduino():
     global humidity, temperature
 
-    if ser.in_waiting > 0:
-        line = ser.readline().decode('utf-8').rstrip()
-        if line.startswith('Temperature: '):
-            temperature = float(line.split(' ')[1])
-        elif line.startswith('Humidity: '):
-            humidity = float(line.split(' ')[1])
+    try:
+        if ser.in_waiting > 0:
+            line = ser.readline().decode('utf-8').rstrip()
+            if line.startswith('Temperature: '):
+                temperature = float(line.split(' ')[1])
+            elif line.startswith('Humidity: '):
+                humidity = float(line.split(' ')[1])
+    except:
+        ser.reset_input_buffer()
+        pass
 
 # update sensor payload and publish if changed
 def publish_sensor_status(client):
@@ -134,14 +138,14 @@ try:
 
 
         # alarm if curtain triggered
-        if GPIO.input(CURTAIN_PIN) == GPIO.LOW:
+        if GPIO.input(CURTAIN_PIN) == GPIO.LOW and not GPIO.input(CYLINDER_BOTTOM_PIN) == GPIO.HIGH:
             GPIO.output(ALARM_PIN, GPIO.HIGH)
 
         # stop door if finished
-        if (GPIO.input(CYLINDER_EXTEND_PIN) == GPIO.HIGH and GPIO.input(CYLINDER_TOP_PIN) == GPIO.HIGH and GPIO.input(CYLINDER_BOTTOM_PIN) == GPIO.LOW):
-            GPIO.output(CYLINDER_EXTEND_PIN, GPIO.LOW)
-        if (GPIO.input(CYLINDER_RETRACT_PIN) == GPIO.HIGH and GPIO.input(CYLINDER_TOP_PIN) == GPIO.LOW and GPIO.input(CYLINDER_BOTTOM_PIN) == GPIO.HIGH):
-            GPIO.output(CYLINDER_RETRACT_PIN, GPIO.LOW)
+        # if (GPIO.input(CYLINDER_EXTEND_PIN) == GPIO.HIGH and GPIO.input(CYLINDER_TOP_PIN) == GPIO.HIGH and GPIO.input(CYLINDER_BOTTOM_PIN) == GPIO.LOW):
+        #     GPIO.output(CYLINDER_EXTEND_PIN, GPIO.LOW)
+        # if (GPIO.input(CYLINDER_RETRACT_PIN) == GPIO.HIGH and GPIO.input(CYLINDER_TOP_PIN) == GPIO.LOW and GPIO.input(CYLINDER_BOTTOM_PIN) == GPIO.HIGH):
+        #     GPIO.output(CYLINDER_RETRACT_PIN, GPIO.LOW)
 
         publish_sensor_status(client)
         previous_status = sensor_status

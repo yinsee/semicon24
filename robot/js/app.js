@@ -80,7 +80,7 @@ new Vue({
                 },
                 options: {
                     responsive: true,
-                    aspectRatio: 1.5,
+                    aspectRatio: 1.75,
                     scales: {
                         x: {
                             type: 'time',
